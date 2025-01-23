@@ -28,10 +28,6 @@ seeds:
   jaffle_shop:
     +schema: raw
 
-saved-queries:
-  my_saved_query:
-    +cache:
-      enabled: true
 
 models:
   jaffle_shop:

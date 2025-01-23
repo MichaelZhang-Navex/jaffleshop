@@ -5,15 +5,15 @@ seed:
 run:
 	dbt run
 	metaplane import-dbt-run  \
-		--connection-id 2861a224-0270-4715-a681-40bcd260f87a \
+		--connection-id d1483bb6-8c8a-41cb-a0db-f85eaf80868b \
 		--project-name dbt-jaffleshop \
-		--job-name jaffle-run-dev \
+		--job-name dbt-run-dev \
 		--manifest ./target/manifest.json \
 		--run-results ./target/run_results.json
-		dbt run --target prod
+	dbt run --target prod
 	metaplane import-dbt-run  \
-		--connection-id 2861a224-0270-4715-a681-40bcd260f87a \
+		--connection-id d1483bb6-8c8a-41cb-a0db-f85eaf80868b \
 		--project-name dbt-jaffleshop \
-		--job-name jaffle-run-prod \
+		--job-name dbt-run-prod \
 		--manifest ./target/manifest.json \
 		--run-results ./target/run_results.json
