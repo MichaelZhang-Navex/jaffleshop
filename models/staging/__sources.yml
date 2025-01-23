@@ -2,7 +2,8 @@ version: 2
 
 sources:
   - name: ecom
-    schema: raw
+    database: dev_dbt_db
+    schema: snowflake_db_raw
     description: E-commerce data for the Jaffle Shop
     freshness:
       warn_after:
