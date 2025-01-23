@@ -55,4 +55,4 @@ joined as (
 
 )
 
-select * from joined
+select *, CURRENT_TIMESTAMP() as updated_on from joined
