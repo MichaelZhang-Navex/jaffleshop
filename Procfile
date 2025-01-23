@@ -1,0 +1,1 @@
+running: while true; do make run; sleep 60; done
