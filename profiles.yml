@@ -1,13 +1,23 @@
 jaffleshop:
-  target: snowflake
+  target: dev
   outputs:
-    snowflake:
+    dev:
       type: snowflake
       account: '{{ env_var("SNOWFLAKE_ACCOUNT") }}'
       user: '{{ env_var("SNOWFLAKE_USER") }}'
       password: '{{ env_var("SNOWFLAKE_PASSWORD") }}'
-      database: '{{ env_var("ENV") }}_DBT_DB'
-      schema: '{{ env_var("ENV") }}_DBT_SC'
+      database: DEV_DBT_DB
+      schema: DEV_DBT_SC
+      threads: 8
+      client_session_keep_alive: False
+      query_tag: 'DBT_JAFFLESHOP_{{ env_var("ENV") }}'
+    prod:
+      type: snowflake
+      account: '{{ env_var("SNOWFLAKE_ACCOUNT") }}'
+      user: '{{ env_var("SNOWFLAKE_USER") }}'
+      password: '{{ env_var("SNOWFLAKE_PASSWORD") }}'
+      database: PROD_DBT_DB
+      schema: PROD_DBT_SC
       threads: 8
       client_session_keep_alive: False
       query_tag: 'DBT_JAFFLESHOP_{{ env_var("ENV") }}'
