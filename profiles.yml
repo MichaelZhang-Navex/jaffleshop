@@ -10,7 +10,6 @@ jaffleshop:
       schema: DEV_DBT_SC
       threads: 8
       client_session_keep_alive: False
-      query_tag: 'DBT_JAFFLESHOP_{{ env_var("ENV") }}'
     prod:
       type: snowflake
       account: '{{ env_var("SNOWFLAKE_ACCOUNT") }}'
@@ -20,4 +19,3 @@ jaffleshop:
       schema: PROD_DBT_SC
       threads: 8
       client_session_keep_alive: False
-      query_tag: 'DBT_JAFFLESHOP_{{ env_var("ENV") }}'
