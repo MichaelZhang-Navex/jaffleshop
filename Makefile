@@ -17,3 +17,7 @@ run-prod:
 		--job-name dbt-run-prod \
 		--manifest ./target/manifest.json \
 		--run-results ./target/run_results.json
+
+run:
+	dbt run
+	dbt run -t prod
