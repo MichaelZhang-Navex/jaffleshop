@@ -16,12 +16,21 @@ jobs:
           pip install dbt-snowflake
           dbt deps
 
+      - name: run dbt prod
+        run: dbt run --target prod
+        if: github.ref == 'refs/heads/main'
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      
       - name: run dbt
         run: dbt run
+        if: github.ref != 'refs/heads/main'
         env:
-            SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-            SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-            SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
       - name: install metaplane cli
         run: /bin/bash -c "$(curl -fsSL https://cli.metaplane.dev/install.sh)"
 
