@@ -10,30 +10,26 @@ jobs:
       - uses: actions/setup-python@v1
         with:
           python-version: "3.11.x"
-
       - name: install dbt
         run: |
           pip install dbt-snowflake
           dbt deps
-
       - name: run dbt prod
-        run: dbt run --target prod
         if: github.ref == 'refs/heads/main'
+        run: dbt run --target prod
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-      
       - name: run dbt
-        run: dbt run
         if: github.ref != 'refs/heads/main'
+        run: dbt run
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
       - name: install metaplane cli
         run: /bin/bash -c "$(curl -fsSL https://cli.metaplane.dev/install.sh)"
-
       - name: report to metaplane
         if: github.ref == 'refs/heads/main' # only report main branch runs
         run: |
@@ -45,7 +41,6 @@ jobs:
             --run-results target/run_results.json
         env:
           MP_API_TOKEN: ${{ secrets.MP_API_TOKEN }}
-
       - name: trigger metaplane pr comments
         if: github.ref != 'refs/heads/main' # provide --commit-sha on non-main branch run
         run: |
