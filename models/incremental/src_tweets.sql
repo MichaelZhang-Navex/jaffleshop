@@ -7,7 +7,7 @@
 
 select 
     id,user_id,tweeted_at,content
-from {{ ref('raw_tweets') }}
+from {{ source('ecom', 'raw_tweets') }}
 {% if is_incremental() %}
 where tweeted_at > (select max(tweeted_at) from {{ this }})
 {% endif %}
