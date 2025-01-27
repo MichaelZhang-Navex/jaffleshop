@@ -29,19 +29,20 @@ jobs:
         if: github.ref == 'refs/heads/main' # only report main branch runs
         run: |
           metaplane import-dbt-run  \
-            --connection-id ${{ secrets.MP_CONNECTION_ID }} \
+            --connection-id $MP_CONNECTION_ID \
             --project-name dbt-jaffleshop \
             --job-name dbt-run-prod \
             --manifest target/manifest.json \
             --run-results target/run_results.json
         env:
           MP_API_TOKEN: ${{ secrets.MP_API_TOKEN }}
+          MP_CONNECTION_ID: ${{ secrets.MP_CONNECTION_ID }}
 
       - name: trigger metaplane pr comments
         if: github.ref != 'refs/heads/main' # provide --commit-sha on non-main branch run
         run: |
           metaplane import-dbt-run  \
-            --connection-id ${{ secrets.MP_CONNECTION_ID }} \
+            --connection-id $MP_CONNECTION_ID \
             --project-name dbt-jaffleshop \
             --job-name dbt-run-dev \
             --manifest target/manifest.json \
@@ -49,3 +50,4 @@ jobs:
             --commit-sha "${{ github.event.pull_request.head.sha || github.sha }}"
         env:
           MP_API_TOKEN: ${{ secrets.MP_API_TOKEN }}
+          MP_CONNECTION_ID: ${{ secrets.MP_CONNECTION_ID }}
