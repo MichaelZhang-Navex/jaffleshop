@@ -17,28 +17,31 @@ jobs:
           dbt deps
 
       - name: run dbt dev
-        if: github.ref == 'refs/heads/main' # only report main branch runs
-        run: dbt run -t dev
-        env:
-          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-      - name: install metaplane cli
-        run: /bin/bash -c "$(curl -fsSL https://cli.metaplane.dev/install.sh)"
-      - name: run dbt prod
         if: github.ref != 'refs/heads/main' # only report main branch runs
         run: dbt run -t dev
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+
+      - name: run dbt prod
+        if: github.ref == 'refs/heads/main' # only report main branch runs
+        run: dbt run -t prod
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+
+
       - name: install metaplane cli
         run: /bin/bash -c "$(curl -fsSL https://cli.metaplane.dev/install.sh)"
-      - name: report to metaplane
+
+
+      - name: report to metaplane - PROD
         if: github.ref == 'refs/heads/main' # only report main branch runs
         run: |
           metaplane import-dbt-run  \
-            --connection-id d1483bb6-8c8a-41cb-a0db-f85eaf80868b \
+            --connection-id $MP_CONNECTION_ID \
             --project-name dbt-jaffleshop \
             --job-name dbt-run-prod \
             --manifest target/manifest.json \
@@ -47,11 +50,11 @@ jobs:
           MP_API_TOKEN: ${{ secrets.MP_API_TOKEN }}
           MP_CONNECTION_ID: ${{ secrets.MP_CONNECTION_ID }}
 
-      - name: trigger metaplane pr comments
+      - name: trigger metaplane pr comments - FEATURE
         if: github.ref != 'refs/heads/main' # provide --commit-sha on non-main branch run
         run: |
           metaplane import-dbt-run  \
-            --connection-id d1483bb6-8c8a-41cb-a0db-f85eaf80868b \
+            --connection-id $MP_CONNECTION_ID \
             --project-name dbt-jaffleshop \
             --job-name dbt-run-dev \
             --manifest target/manifest.json \
