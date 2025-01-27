@@ -29,7 +29,7 @@ jobs:
         if: github.ref == 'refs/heads/main' # only report main branch runs
         run: |
           metaplane import-dbt-run  \
-            --connection-id "$MP_CONNECTION_ID" \
+            --connection-id d1483bb6-8c8a-41cb-a0db-f85eaf80868b \
             --project-name dbt-jaffleshop \
             --job-name dbt-run-prod \
             --manifest target/manifest.json \
@@ -42,7 +42,7 @@ jobs:
         if: github.ref != 'refs/heads/main' # provide --commit-sha on non-main branch run
         run: |
           metaplane import-dbt-run  \
-            --connection-id "$MP_CONNECTION_ID" \
+            --connection-id d1483bb6-8c8a-41cb-a0db-f85eaf80868b \
             --project-name dbt-jaffleshop \
             --job-name dbt-run-dev \
             --manifest target/manifest.json \
