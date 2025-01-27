@@ -16,15 +16,24 @@ jobs:
           pip install dbt-snowflake==1.9.0
           dbt deps
 
-      - name: run dbt
-        run: dbt run
+      - name: run dbt dev
+        if: github.ref == 'refs/heads/main' # only report main branch runs
+        run: dbt run -t dev
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
       - name: install metaplane cli
         run: /bin/bash -c "$(curl -fsSL https://cli.metaplane.dev/install.sh)"
-
+      - name: run dbt prod
+        if: github.ref != 'refs/heads/main' # only report main branch runs
+        run: dbt run -t dev
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      - name: install metaplane cli
+        run: /bin/bash -c "$(curl -fsSL https://cli.metaplane.dev/install.sh)"
       - name: report to metaplane
         if: github.ref == 'refs/heads/main' # only report main branch runs
         run: |
