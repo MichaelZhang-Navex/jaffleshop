@@ -30,8 +30,8 @@ jobs:
         run: |
           metaplane import-dbt-run  \
             --connection-id ${{ secrets.MP_CONNECTION_ID }} \
-            --project-name my-dbt-core-project \
-            --job-name production-run \
+            --project-name dbt-jaffleshop \
+            --job-name dbt-run-prod \
             --manifest target/manifest.json \
             --run-results target/run_results.json
         env:
@@ -42,8 +42,8 @@ jobs:
         run: |
           metaplane import-dbt-run  \
             --connection-id ${{ secrets.MP_CONNECTION_ID }} \
-            --project-name my-dbt-core-project \
-            --job-name branch-run \
+            --project-name dbt-jaffleshop \
+            --job-name dbt-run-dev \
             --manifest target/manifest.json \
             --run-results target/run_results.json \
             --commit-sha "${{ github.event.pull_request.head.sha || github.sha }}"

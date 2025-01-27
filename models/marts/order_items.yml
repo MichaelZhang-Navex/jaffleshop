@@ -6,7 +6,3 @@ models:
           - not_null
           - unique
       - name: order_id
-        data_tests:
-          - relationships:
-              to: ref('orders')
-              field: order_id
