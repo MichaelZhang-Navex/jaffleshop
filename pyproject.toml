@@ -1,0 +1,10 @@
+[project]
+name = "jaffleshop"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dbt-snowflake>=1.9.0",
+    "jafgen>=0.4.14",
+]
