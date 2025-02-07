@@ -15,4 +15,4 @@ profiles.yml
 .ruff_cache
 __pycache__
 
-jaffle-data/
+jaffle-data/*.csv
