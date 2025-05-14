@@ -21,6 +21,7 @@ vars:
 
 seeds:
   jaffle_shop:
+    +database: jaffle_seed_db
     +schema: raw
 
 
