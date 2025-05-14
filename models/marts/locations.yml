@@ -1,3 +1,14 @@
+models:
+  - name: locations
+    columns:
+      - name: location_id
+      - name: location_name
+      - name: tax_rate
+      - name: opened_date
+
+
+
+
 semantic_models:
   - name: locations
     description: |
