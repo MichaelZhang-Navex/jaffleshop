@@ -31,6 +31,7 @@ seeds:
 
 models:
   jaffle_shop:
+    +schema: "{{env_var('DBT_ENV', 'MAIN')}}"
     staging:
       +materialized: view
     marts:
