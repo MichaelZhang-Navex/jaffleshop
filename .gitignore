@@ -16,3 +16,4 @@ profiles.yml
 __pycache__
 
 jaffle-data/*.csv
+*.duckdb
