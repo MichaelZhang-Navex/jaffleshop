@@ -56,4 +56,4 @@ joined as (
 )
 
 select * from joined
-order by count_lifetime_orders desc
+order by count_lifetime_orders

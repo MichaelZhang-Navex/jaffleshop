@@ -1,11 +1,6 @@
 config-version: 2
 
 name: "jaffle_shop"
-version: "3.0.0"
-require-dbt-version: ">=1.5.0"
-
-dbt-cloud:
-  project-id: 275557 # Put your project id here
 
 profile: jaffleshop # Put your profile here
 
@@ -31,7 +26,6 @@ seeds:
 
 models:
   jaffle_shop:
-    +schema: "{{env_var('DBT_ENV', 'MAIN')}}"
     staging:
       +materialized: view
     marts:
