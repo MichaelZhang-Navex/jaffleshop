@@ -32,7 +32,7 @@ jobs:
       - name: trigger metaplane pr comments
         run: |
           metaplane import-dbt-run  \
-            --connection-id 562b0248-2fc9-11ee-be56-e4cdc408-6175-4044-95b3-aa6a22b73a7b \
+            --connection-id ${{ secrets.MP_CONNECTION_ID }} \
             --project-name dbt-jaffle-test \
             --job-name feature-run \
             --manifest target/manifest.json \
