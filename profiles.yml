@@ -3,7 +3,7 @@ jaffleshop:
   outputs:
     feature:
       type: snowflake
-      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       user: zhang1605
       password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
       role: accountadmin
@@ -14,7 +14,7 @@ jaffleshop:
       client_session_keep_alive: false
     develop:
       type: snowflake
-      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       user: zhang1605
       password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
       role: accountadmin
@@ -25,7 +25,7 @@ jaffleshop:
       client_session_keep_alive: false
     stage:
       type: snowflake
-      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       user: zhang1605
       password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
       role: accountadmin
@@ -36,7 +36,7 @@ jaffleshop:
       client_session_keep_alive: false
     prod:
       type: snowflake
-      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       user: zhang1605
       password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
       role: accountadmin
