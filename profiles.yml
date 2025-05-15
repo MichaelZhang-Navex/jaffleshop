@@ -1,0 +1,47 @@
+jaffleshop:
+  target: feature
+  outputs:
+    feature:
+      type: snowflake
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      user: zhang1605
+      password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+      role: accountadmin
+      database: jaffle_feature_db
+      warehouse: compute_wh
+      schema: jaffleshop_sc
+      threads: 4
+      client_session_keep_alive: false
+    develop:
+      type: snowflake
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      user: zhang1605
+      password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+      role: accountadmin
+      database: jaffle_develop_db
+      warehouse: compute_wh
+      schema: jaffleshop_sc
+      threads: 4
+      client_session_keep_alive: false
+    stage:
+      type: snowflake
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      user: zhang1605
+      password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+      role: accountadmin
+      database: jaffle_stage_db
+      warehouse: compute_wh
+      schema: jaffleshop_sc
+      threads: 4
+      client_session_keep_alive: false
+    prod:
+      type: snowflake
+      account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
+      user: zhang1605
+      password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+      role: accountadmin
+      database: jaffle_prod_db
+      warehouse: compute_wh
+      schema: jaffleshop_sc
+      threads: 4
+      client_session_keep_alive: false

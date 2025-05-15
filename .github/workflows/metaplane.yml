@@ -1,0 +1,42 @@
+name: PR Review
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  run-dbt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v1
+        with:
+          python-version: "3.11.x"
+
+      - name: install dbt
+        run: |
+          pip install dbt-snowflake
+          dbt deps
+
+      - name: run dbt
+        run: dbt run --target feature
+        env:
+          DBT_ENV_NAME: ${{ secrets.DBT_ENV_NAME }}
+          DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}
+          DBT_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_PASSWORD }}
+
+      - name: install metaplane cli
+        run: /bin/bash -c "$(curl -fsSL https://cli.metaplane.dev/install.sh)"
+
+      - name: trigger metaplane pr comments
+        run: |
+          metaplane import-dbt-run  \
+            --connection-id ${{ secrets.MP_CONNECTION_ID }} \
+            --project-name dbt-jaffle-test \
+            --job-name feature-run \
+            --manifest target/manifest.json \
+            --run-results target/run_results.json \
+            --commit-sha "${{ github.event.pull_request.head.sha || github.sha }}"
+        env:
+          MP_API_TOKEN: ${{ secrets.MP_API_TOKEN }}

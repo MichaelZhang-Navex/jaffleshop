@@ -2,6 +2,7 @@ version: 2
 
 sources:
   - name: ecom
+    database: jaffle_seed_db
     schema: raw
     description: E-commerce data for the Jaffle Shop
     freshness:

@@ -1,3 +1,14 @@
+models:
+  - name: products
+    columns:
+      - name: product_id
+      - name: product_name
+      - name: product_type
+      - name: product_description
+      - name: product_price
+      - name: is_food_item
+      - name: is_drink_item
+
 semantic_models:
   #The name of the semantic model.
   - name: products
