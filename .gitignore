@@ -16,3 +16,6 @@ __pycache__
 
 jaffle-data/*.csv
 *.duckdb
+
+
+target-base/
