@@ -20,3 +20,4 @@ renamed as (
 )
 
 select * from renamed
+order by order_id, sku desc
