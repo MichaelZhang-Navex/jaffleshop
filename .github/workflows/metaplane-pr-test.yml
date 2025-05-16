@@ -36,6 +36,8 @@ jobs:
           CHANGED_SQL_FILES= $(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH" | xargs -I{} gh pr view {} --json files --jq '.files[].path' | grep '\.sql$' || true)
           echo "Changed .sql files in this PR:"
           echo "$CHANGED_SQL_FILES"
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: trigger metaplane pr comments
         run: |
