@@ -4,7 +4,8 @@ renamed as (
     select
         id as order_item_id,
         order_id,
-        sku as product_id
+        sku as product_id,
+        'dbt' as user_name
     from source
 )
 

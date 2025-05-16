@@ -20,7 +20,7 @@ jobs:
           pip install dbt-snowflake
           dbt deps
       - name: List changed files
-        run: >
+        run: |
           CHANGED_SQL_FILES=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH"
           | xargs -I{} gh pr view {} --json files --jq '.files[].path' | grep
           '\.sql$' || true)
