@@ -14,7 +14,7 @@ snapshot-paths: ["snapshots"]
 target-path: "target"
 clean-targets:
   - "target"
-  - "dbt_packages"
+  - "target-base"
 
 vars:
   "dbt_date:time_zone": "America/Los_Angeles"
