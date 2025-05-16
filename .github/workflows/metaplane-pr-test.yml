@@ -19,23 +19,17 @@ jobs:
         run: |
           pip install dbt-snowflake
           dbt deps
-      - name: List changed files
-        run: >
-          CHANGED_SQL_FILES=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH"
-          | xargs -I{} gh pr view {} --json files --jq '.files[].path' | grep
-          '\.sql$' || true)
-          FILES_WITH_PLUS=$(for f in $CHANGED_SQL_FILES; do echo "${f}+"; done | xargs)
-        env:
-          GH_TOKEN: '${{ github.token }}'
       - name: run dbt
         run: |
-          # Add a + after each changed SQL file
+          PR_NUMBER=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
+          CHANGED_SQL_FILES=$(gh pr view "$PR_NUMBER" --json files --jq '.files[].path' | grep '\.sql$' | sed 's/$/+/' | paste -sd ' ' - || true)
           
-          dbt run --target feature -s $FILES_WITH_PLUS
+          dbt run --target feature -s $CHANGED_SQL_FILES
         env:
           DBT_ENV_NAME: '${{ secrets.DBT_ENV_NAME }}'
           DBT_SNOWFLAKE_ACCOUNT: '${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}'
           DBT_SNOWFLAKE_PASSWORD: '${{ secrets.DBT_SNOWFLAKE_PASSWORD }}'
+          GH_TOKEN: '${{ github.token }}'
       - name: install metaplane cli
         run: '/bin/bash -c "$(curl -fsSL https://cli.metaplane.dev/install.sh)"'
       - name: trigger metaplane pr comments
