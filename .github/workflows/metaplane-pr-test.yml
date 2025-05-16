@@ -1,10 +1,10 @@
 name: Review and test for metaplane on PR created
-on:
+'on':
   pull_request_target:
-    types: [opened]
+    types:
+      - opened
     branches:
       - develop
-
 jobs:
   run-dbt:
     runs-on: ubuntu-latest
@@ -14,31 +14,30 @@ jobs:
           fetch-depth: 1
       - uses: actions/setup-python@v1
         with:
-          python-version: "3.11.x"
-
+          python-version: 3.11.x
       - name: install dbt
         run: |
           pip install dbt-snowflake
           dbt deps
-
-      - name: run dbt
-        run: dbt run --target feature
-        env:
-          DBT_ENV_NAME: ${{ secrets.DBT_ENV_NAME }}
-          DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}
-          DBT_SNOWFLAKE_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_PASSWORD }}
-
-      - name: install metaplane cli
-        run: /bin/bash -c "$(curl -fsSL https://cli.metaplane.dev/install.sh)"
-
       - name: List changed files
-        run: |
-          CHANGED_SQL_FILES= $(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH" | xargs -I{} gh pr view {} --json files --jq '.files[].path' | grep '\.sql$' || true)
-          echo "Changed .sql files in this PR:"
-          echo "$CHANGED_SQL_FILES"
+        run: >
+          CHANGED_SQL_FILES=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH"
+          | xargs -I{} gh pr view {} --json files --jq '.files[].path' | grep
+          '\.sql$' || true)
+          FILES_WITH_PLUS=$(for f in $CHANGED_SQL_FILES; do echo "${f}+"; done | xargs)
         env:
-          GH_TOKEN: ${{ github.token }}
-
+          GH_TOKEN: '${{ github.token }}'
+      - name: run dbt
+        run: |
+          # Add a + after each changed SQL file
+          
+          dbt run --target feature -s $FILES_WITH_PLUS
+        env:
+          DBT_ENV_NAME: '${{ secrets.DBT_ENV_NAME }}'
+          DBT_SNOWFLAKE_ACCOUNT: '${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}'
+          DBT_SNOWFLAKE_PASSWORD: '${{ secrets.DBT_SNOWFLAKE_PASSWORD }}'
+      - name: install metaplane cli
+        run: '/bin/bash -c "$(curl -fsSL https://cli.metaplane.dev/install.sh)"'
       - name: trigger metaplane pr comments
         run: |
           metaplane import-dbt-run  \
@@ -49,4 +48,4 @@ jobs:
             --run-results target/run_results.json \
             --commit-sha "${{ github.event.pull_request.head.sha || github.sha }}"
         env:
-          MP_API_TOKEN: ${{ secrets.MP_API_TOKEN }}
+          MP_API_TOKEN: '${{ secrets.MP_API_TOKEN }}'
